@@ -1,8 +1,16 @@
 {
 	"Server": {
 		"hostname": "",
-		"port": 9000,
+		"port": 9090,
 		"username": "",
 		"password": ""
+	},
+
+	"Player": {
+		"name": ""
+	},
+
+	"SqueezyPi": {
+		"use_local_pylms": 0
 	}
 }
