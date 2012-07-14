@@ -2,12 +2,22 @@
 
 import sys
 from datetime import timedelta
-sys.path.append("/home/htpc/development/python/PyLMS")
 from pylms.server import Server
 from pylms.player import Player
+from json import JSONDecoder
 
 def connect_server():
-    server = Server(hostname="henryhtpc.homeip.net", port=9090, username="", password="")
+    decoder = JSONDecoder()
+    f = open("Config.json", "r")
+    data = f.read()
+    f.close()
+
+    server_hostname = decoder.decode(data)['Server']['hostname']
+    server_port = decoder.decode(data)['Server']['port']
+    server_username = decoder.decode(data)['Server']['username']
+    server_password = decoder.decode(data)['Server']['password']
+    
+    server = Server(hostname=server_hostname, port=server_port, username=server_username, password=server_password)
     server.connect()
     
     #print("Logged in:", server.logged_in)
