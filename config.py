@@ -5,7 +5,7 @@ from json import JSONDecoder
 class ConfigLoader:
     """Class for handling the SqueezyPi JSON configuration file."""
 
-    def __init__(self, config_path='Config.json'):
+    def __init__(self, config_path='config.json'):
         """Load the configuration file."""
         f = open(config_path, "r")
         data = f.read()
