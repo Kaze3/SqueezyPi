@@ -13,7 +13,6 @@ class ConfigLoader:
 
         self.server = self.ServerConfig(data)
         self.player = self.PlayerConfig(data)
-        self.squeezy_pi = self.SqueezyPiConfig(data)
 
     class ServerConfig:
         """Load and store server configuration variables"""
