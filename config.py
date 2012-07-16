@@ -29,9 +29,3 @@ class ConfigLoader:
         def __init__(self, data):
             decoder = JSONDecoder()
             self.name = decoder.decode(data)['Player']['name']
-
-    class SqueezyPiConfig:
-        """Load and store SqueezyPi configuration variables"""
-        def __init__(self, data):
-            decoder = JSONDecoder()
-            self.use_local_pylms = decoder.decode(data)['SqueezyPi']['use_local_pylms']

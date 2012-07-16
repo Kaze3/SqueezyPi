@@ -6,12 +6,6 @@ from pylms.server import Server
 from pylms.player import Player
 
 class SqueezeslaveMonitor:
-    def __init__(self, squeezy_pi_config):
-        if squeezy_pi_config.use_local_pylms:
-            basepath = os.path.dirname(__file__)
-            filepath = os.path.abspath(os.path.join(basepath, "..", "PyLMS"))
-            sys.path.append(filepath)       
-    
     def connect_server(self, server_config):
         """Connect to a Logitech Media server."""
         self.server = Server(hostname=server_config.hostname, port=server_config.port, username=server_config.username, password=server_config.password)

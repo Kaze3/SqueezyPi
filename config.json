@@ -8,9 +8,5 @@
 
 	"Player": {
 		"name": ""
-	},
-
-	"SqueezyPi": {
-		"use_local_pylms": 0
 	}
 }
