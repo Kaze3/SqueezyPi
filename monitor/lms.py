@@ -3,6 +3,7 @@
 from collections import deque
 from pylms.server import Server
 from pylms.player import Player
+from sys import exit
 from time import sleep
 import re
 import threading
@@ -20,8 +21,14 @@ class LMSMonitor(threading.Thread):
 
         option_match = re.compile(r'(?<!%)(%\w{1}(?!\w))')
         self.output_string = config_string
-        for match in option_match.finditer(config_string):
-            self.output_string = self.output_string[:match.start()] + '{}' + self.output_string[match.end():]
+        self.output_functions = []
+        try:
+            for match in option_match.finditer(config_string):
+                self.output_string = self.output_string[:match.start()] + '{}' + self.output_string[match.end():]
+                self.output_functions.extend(options[match.group()])
+        except:
+            sys.exit('LMSMonitor: chosen output option does not exist')
+            
 
     def connect_server(self, server_config):
         """Connect to a Logitech Media server."""
@@ -34,10 +41,12 @@ class LMSMonitor(threading.Thread):
 
     def run(self):
         while True:
-            status.update_track_artist(self.player.get_track_artist())
-            status.update_track_title(self.player.get_track_title())
-            status.update_time_elapsed(self.player.get_time_elapsed())
-            self.status_deque.append(status)
+	    status_string = self.output_string
+            for i in range(0, self.output_functions.__len__()):
+                status_split = status_string.split('{}', 1)
+                status_string = status_split[0] + self.output_functions[i]() + status_split[1]
+
+            self.status_deque.append(status_string)
             time.sleep(1)
 
 class PlayerStatus:
