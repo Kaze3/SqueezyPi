@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import queue, monitor, output, config
+from collections import deque
+import monitor, output, config
 
 def main():
     squeezypi_config = config.ConfigLoader()
 
-    status_queue = queue.Queue()
-    lms_monitor = monitor.SqueezyPiMonitor(status_queue)
-    lms_output = output.SqueezyPiOutput(status_queue)
+    status_deque = deque()
+    lms_monitor = monitor.SqueezyPiMonitor(status_deque)
+    lms_output = output.SqueezyPiOutput(status_deque)
 
     lms_monitor.connect_server(squeezypi_config.server)
     lms_monitor.connect_player(squeezypi_config.player)

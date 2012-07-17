@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
+from collections import deque
 from pylms.server import Server
 from pylms.player import Player
-import queue, threading, time
+import threading, time
 
 class SqueezyPiMonitor(threading.Thread):
-    def __init__(self, status_queue):
+    def __init__(self, status_deque):
         threading.Thread.__init__(self)
-        self.status_queue = status_queue
+        self.status_deque = status_deque
 
     def connect_server(self, server_config):
         """Connect to a Logitech Media server."""
@@ -24,7 +25,7 @@ class SqueezyPiMonitor(threading.Thread):
             status.update_track_artist(self.player.get_track_artist())
             status.update_track_title(self.player.get_track_title())
             status.update_time_elapsed(self.player.get_time_elapsed())
-            self.status_queue.put(status)
+            self.status_deque.append(status)
             time.sleep(1)
 
 class PlayerStatus:
