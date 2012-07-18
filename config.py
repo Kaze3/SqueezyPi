@@ -11,20 +11,17 @@ class ConfigLoader:
         data = f.read()
         f.close()
 
-        self.server = self.ServerConfig(data)
-        self.player = self.PlayerConfig(data)
+        decoder = JSONDecoder()
+        decoded_configuration = decoder.decode(data)
+   
+        self.monitor = self.MonitorConfig(decoded_configuration['Monitor'])
 
-    class ServerConfig:
-        """Load and store server configuration variables"""
+    class MonitorConfig:
+        """Load and store monitor plugin configuration"""
         def __init__(self, data):
-            decoder = JSONDecoder()
-            self.hostname = decoder.decode(data)['Server']['hostname']
-            self.port = decoder.decode(data)['Server']['port']
-            self.username = decoder.decode(data)['Server']['username']
-            self.password = decoder.decode(data)['Server']['password']
+            self.plugin_name = data['plugin_name']
 
-    class PlayerConfig:
-        """Load and store player configuration variables"""
-        def __init__(self, data):
-            decoder = JSONDecoder()
-            self.name = decoder.decode(data)['Player']['name']
+            # now remove monitor-specific configuration
+            # and leave only plugin-specific configuration
+            data.pop('plugin_name')
+            self.plugin_data = data

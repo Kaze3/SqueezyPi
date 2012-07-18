@@ -1,12 +1,20 @@
 {
-	"Server": {
-		"hostname": "",
-		"port": 9090,
-		"username": "",
-		"password": ""
-	},
+	"Monitor": {
+		"plugin_name": "lms",
+		"lms":
+		{
+			"output_format": "%t - %a (%h:%m:%s)",
 
-	"Player": {
-		"name": ""
+			"Server": {
+				"hostname": "",
+				"port": 9090,
+				"username": "",
+				"password": ""
+			},
+
+			"Player": {
+				"name": ""
+			},
+		}
 	}
 }
