@@ -1,41 +1,21 @@
 #!/usr/bin/env python
 
-from collections import deque
-from pylms.server import Server
-from pylms.player import Player
-import threading, time
+import sys, os.path, inspect
 
-class SqueezyPiMonitor(threading.Thread):
-    def __init__(self, status_deque):
-        threading.Thread.__init__(self)
+class SqueezyPiMonitor():
+    def __init__(self, status_deque, monitor_config):
         self.status_deque = status_deque
+        self.plugin_name = monitor_config.plugin_name
 
-    def connect_server(self, server_config):
-        """Connect to a Logitech Media server."""
-        self.server = Server(hostname=server_config.hostname, port=server_config.port, username=server_config.username, password=server_config.password)
-        self.server.connect()
+        self.load_plugin(monitor_config.plugin_data[self.plugin_name])
 
-    def connect_player(self, player_config):
-        """Connect to the Squeezeslave player (must be connected to a server)."""
-        self.player = self.server.get_player(player_config.name)
+    def load_plugin(self, plugin_config):
+        """Load the monitor plugin"""
+        # Expects the class to be called "MonitorPlugin" and 
+        # take as arguments the deque and a configuration dictionary
+        sys.path.append(os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]) + "/monitor"))
+        from lms import MonitorPlugin
+        self.monitor_plugin = MonitorPlugin(self.status_deque, plugin_config)
 
-    def run(self):
-        status = PlayerStatus()
-        while True:
-            status.update_track_artist(self.player.get_track_artist())
-            status.update_track_title(self.player.get_track_title())
-            status.update_time_elapsed(self.player.get_time_elapsed())
-            self.status_deque.append(status)
-            time.sleep(1)
-
-class PlayerStatus:
-    def update_time_elapsed(self, time_elapsed):
-        time_elapsed = int(time_elapsed)
-        self.hours, _remainder = divmod(time_elapsed, 3600)
-        self.minutes, self.seconds = divmod(_remainder, 60)
-
-    def update_track_artist(self, track_artist):
-        self.track_artist = track_artist
-
-    def update_track_title(self, track_title):
-        self.track_title = track_title
+    def start_monitoring(self):
+        self.monitor_plugin.start()

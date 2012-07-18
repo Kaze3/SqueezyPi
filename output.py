@@ -13,7 +13,7 @@ class SqueezyPiOutput(threading.Thread):
         while True:
             try:
                 status = self.status_deque.pop()
-                print(status.track_artist, " - ", status.track_title, "(", format(status.hours, "02d"), ":", format(status.minutes, "02d"), ":", format(status.seconds, "02d"), ")")
+                print(status)
             except IndexError:
                 pass
             sleep(0.1)
