@@ -1,8 +1,7 @@
 {
 	"Monitor": {
 		"plugin_name": "lms",
-		"lms":
-		{
+		"lms": {
 			"output_format": "%t - %a (%h:%m:%s)",
 
 			"Server": {
@@ -14,7 +13,7 @@
 
 			"Player": {
 				"name": ""
-			},
+			}
 		}
 	}
 }
