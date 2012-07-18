@@ -59,17 +59,17 @@ class PlayerStatus:
 
     def update_track_hours_elapsed(self):
         elapsed = int(self.player.get_time_elapsed())
-        return str(divmod(elapsed, 3600)[0]) 
+        return format(divmod(elapsed, 3600)[0], "02d")
 
     def update_track_minutes_elapsed(self):
         elapsed = int(self.player.get_time_elapsed())
         _remainder = divmod(elapsed, 3600)[1]
-        return str(divmod(_remainder, 60)[0]) 
+        return format(divmod(_remainder, 60)[0], "02d")
 
     def update_track_seconds_elapsed(self):
         elapsed = int(self.player.get_time_elapsed())
         _remainder = divmod(elapsed, 3600)[1]
-        return str(divmod(_remainder, 60)[1]) 
+        return format(divmod(_remainder, 60)[1], "02d")
 
     def update_track_artist(self):
         return self.player.get_track_artist()
